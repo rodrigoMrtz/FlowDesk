@@ -1,0 +1,6 @@
+{
+  "name": "OmniDesk - Gestão de Chamados & SLAs Enterprise",
+  "description": "Sistema completo de gerenciamento de chamados operacionais e helpdesk com Kanban fluido, cálculo em tempo real de SLAs, trilha de auditoria completa por card, central de simulação de notificações multicanal (Push, SMS e E-mail) e relatórios em PDF/CSV.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
