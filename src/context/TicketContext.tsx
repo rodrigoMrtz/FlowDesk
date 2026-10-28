@@ -35,6 +35,7 @@ interface TicketContextType {
   currentUser: UserProfile | null;
   login: (user: UserProfile) => void;
   logout: () => void;
+  updateCurrentUser: (data: Partial<UserProfile>) => void;
   users: UserProfile[];
   addUser: (data: Omit<UserProfile, 'id' | 'createdAt'>) => void;
   updateUser: (user: UserProfile) => void;
@@ -214,6 +215,15 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setCurrentUser(null);
     localStorage.removeItem(STORAGE_KEYS.USER);
     soundManager.playChime('pop');
+  };
+
+  const updateCurrentUser = (data: Partial<UserProfile>) => {
+    if (!currentUser) return;
+    const updated = { ...currentUser, ...data };
+    setCurrentUser(updated);
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updated));
+    setUsers((prev) => prev.map((u) => (u.id === updated.id ? updated : u)));
+    soundManager.playChime('success');
   };
 
   useEffect(() => {
@@ -666,16 +676,12 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const filteredTickets = useMemo(() => {
     return tickets.filter((ticket) => {
       if (currentUser?.role === 'org_user') {
-        // Org user sees only tickets opened by their organization or email
-        if (
-          ticket.requesterEmail.toLowerCase() !== currentUser.email.toLowerCase() &&
-          ticket.organizationName !== currentUser.organizationName &&
-          ticket.organizationId !== currentUser.organizationId
-        ) {
+        // Usuário de organização só vê os chamados criados por ele próprio
+        if (ticket.requesterEmail.toLowerCase() !== currentUser.email.toLowerCase()) {
           return false;
         }
       } else if (currentUser?.role === 'technician') {
-        // Technician sees tickets in their department or assigned to them
+        // Técnico vê chamados do seu departamento ou atribuídos a ele
         const techRecord = technicians.find((t) => t.email.toLowerCase() === currentUser.email.toLowerCase());
         const matchDept = techRecord ? ticket.department === techRecord.department : true;
         if (!matchDept) return false;
@@ -703,6 +709,7 @@ export const TicketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         currentUser,
         login,
         logout,
+        updateCurrentUser,
         users,
         addUser,
         updateUser,

@@ -262,6 +262,17 @@ export const Header: React.FC = () => {
                 <button
                   onClick={() => {
                     setIsUserMenuOpen(false);
+                    setCurrentView('profile');
+                  }}
+                  className="w-full flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-medium text-left border-b border-slate-100 dark:border-slate-800"
+                >
+                  <UserIcon className="w-4 h-4 text-blue-500" />
+                  <span>Meu Perfil</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
                     logout();
                   }}
                   className="w-full flex items-center gap-2 px-4 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors font-medium text-left"

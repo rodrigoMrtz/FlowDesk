@@ -19,7 +19,7 @@ export const ReportsModal: React.FC = () => {
   const {
     isReportsModalOpen,
     setIsReportsModalOpen,
-    tickets,
+    filteredTickets,
   } = useTicketContext();
 
   const [period, setPeriod] = useState<'today' | 'week' | 'month' | 'all'>('all');
@@ -28,7 +28,7 @@ export const ReportsModal: React.FC = () => {
 
   if (!isReportsModalOpen) return null;
 
-  const filtered = tickets.filter((ticket) => {
+  const filtered = filteredTickets.filter((ticket) => {
     if (departmentFilter !== 'ALL' && ticket.department !== departmentFilter) return false;
     if (statusFilter !== 'ALL' && ticket.status !== statusFilter) return false;
 

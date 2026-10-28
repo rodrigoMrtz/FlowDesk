@@ -13,6 +13,7 @@ import { NotificationCenterModal } from './components/NotificationCenterModal';
 import { ReportsModal } from './components/ReportsModal';
 import { ToastNotification } from './components/ToastNotification';
 import { LoginScreen } from './components/LoginScreen';
+import { UserProfileView } from './components/UserProfileView';
 
 const AppContent: React.FC = () => {
   const { currentUser, currentView } = useTicketContext();
@@ -33,6 +34,7 @@ const AppContent: React.FC = () => {
         {currentView === 'admin_users' && <AdminUsersView />}
         {currentView === 'admin_orgs' && <AdminOrgsView />}
         {currentView === 'admin_technicians' && <AdminTechniciansView />}
+        {currentView === 'profile' && <UserProfileView />}
       </main>
 
       {/* Floating Overlays & Modals */}

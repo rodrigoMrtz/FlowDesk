@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Building2, Plus, Edit2, Trash2, X, CheckCircle2, MapPin } from 'lucide-react';
 import { useTicketContext } from '../context/TicketContext';
 import { Organization } from '../types';
+import { maskCNPJ } from '../utils/masks';
 
 export const AdminOrgsView: React.FC = () => {
   const { organizations, addOrganization, updateOrganization, deleteOrganization } = useTicketContext();
@@ -180,7 +181,7 @@ export const AdminOrgsView: React.FC = () => {
                   <input
                     type="text"
                     value={cnpj}
-                    onChange={(e) => setCnpj(e.target.value)}
+                    onChange={(e) => setCnpj(maskCNPJ(e.target.value))}
                     placeholder="00.000.000/0001-00"
                     className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono"
                     required

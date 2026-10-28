@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Users, Plus, Shield, Wrench, Building2, Trash2, Edit2, X, Check } from 'lucide-react';
 import { useTicketContext } from '../context/TicketContext';
 import { UserProfile, UserRole, Department } from '../types';
+import { maskPhone } from '../utils/masks';
 
 export const AdminUsersView: React.FC = () => {
   const { users, addUser, updateUser, deleteUser, organizations } = useTicketContext();
@@ -217,8 +218,9 @@ export const AdminUsersView: React.FC = () => {
                   <input
                     type="text"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                    onChange={(e) => setPhone(maskPhone(e.target.value))}
+                    placeholder="(11) 99999-9999"
+                    className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono"
                   />
                 </div>
               </div>

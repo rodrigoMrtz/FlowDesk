@@ -17,13 +17,13 @@ import { DEPARTMENTS, PRIORITY_CONFIG } from '../data/initialData';
 import { Priority } from '../types';
 
 export const Dashboard: React.FC = () => {
-  const { tickets, technicians, setIsReportsModalOpen } = useTicketContext();
+  const { filteredTickets, technicians, setIsReportsModalOpen } = useTicketContext();
   const [hoveredDept, setHoveredDept] = useState<string | null>(null);
 
   // Metric 1: Total & Active
-  const totalTickets = tickets.length;
-  const activeTickets = tickets.filter((t) => t.status !== 'RESOLVED' && t.status !== 'CLOSED');
-  const resolvedTickets = tickets.filter((t) => t.status === 'RESOLVED' || t.status === 'CLOSED');
+  const totalTickets = filteredTickets.length;
+  const activeTickets = filteredTickets.filter((t) => t.status !== 'RESOLVED' && t.status !== 'CLOSED');
+  const resolvedTickets = filteredTickets.filter((t) => t.status === 'RESOLVED' || t.status === 'CLOSED');
 
   // Metric 2: SLA Compliance
   const resolvedOnTime = resolvedTickets.filter((t) => {
@@ -36,12 +36,12 @@ export const Dashboard: React.FC = () => {
     : 100;
 
   // Metric 3: SLA Risks and Breaches
-  const breachedTickets = tickets.filter((t) => {
+  const breachedTickets = filteredTickets.filter((t) => {
     const sla = checkTicketSLA(t);
     return sla.isBreached && t.status !== 'RESOLVED' && t.status !== 'CLOSED';
   });
 
-  const warningTickets = tickets.filter((t) => {
+  const warningTickets = filteredTickets.filter((t) => {
     const sla = checkTicketSLA(t);
     return sla.status === 'WARNING' && t.status !== 'RESOLVED' && t.status !== 'CLOSED';
   });
@@ -63,7 +63,7 @@ export const Dashboard: React.FC = () => {
 
   // Department Distribution data
   const deptCounts = DEPARTMENTS.map((dept) => {
-    const count = tickets.filter((t) => t.department === dept.id).length;
+    const count = filteredTickets.filter((t) => t.department === dept.id).length;
     const percentage = totalTickets > 0 ? Math.round((count / totalTickets) * 100) : 0;
     return { ...dept, count, percentage };
   });
@@ -71,7 +71,7 @@ export const Dashboard: React.FC = () => {
   // Priority Distribution data
   const priorities: Priority[] = ['P1_CRITICAL', 'P2_HIGH', 'P3_MEDIUM', 'P4_LOW'];
   const priorityCounts = priorities.map((p) => {
-    const count = tickets.filter((t) => t.priority === p).length;
+    const count = filteredTickets.filter((t) => t.priority === p).length;
     const percentage = totalTickets > 0 ? Math.round((count / totalTickets) * 100) : 0;
     return { priority: p, count, percentage, config: PRIORITY_CONFIG[p] };
   });
@@ -97,7 +97,7 @@ export const Dashboard: React.FC = () => {
 
         <div className="flex items-center gap-2.5">
           <button
-            onClick={() => exportTicketsToCSV(tickets)}
+            onClick={() => exportTicketsToCSV(filteredTickets)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-xs transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
@@ -360,10 +360,10 @@ export const Dashboard: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-              {technicians.map((tech, index) => {
-                const assignedTickets = tickets.filter((t) => t.assignedTechnicianId === tech.id);
+              {technicians.map((tech) => {
+                const assignedTickets = filteredTickets.filter((t) => t.assignedTechnicianId === tech.id);
                 const activeCount = assignedTickets.filter(
-                  (t) => t.status !== 'RESOLVED' && t.status !== 'CLOSED'
+                  (t: any) => t.status !== 'RESOLVED' && t.status !== 'CLOSED'
                 ).length;
 
                 return (

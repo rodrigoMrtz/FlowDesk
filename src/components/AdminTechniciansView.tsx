@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Wrench, Plus, Edit2, Trash2, X, Star } from 'lucide-react';
 import { useTicketContext } from '../context/TicketContext';
 import { Technician, Department } from '../types';
+import { maskPhone } from '../utils/masks';
 
 export const AdminTechniciansView: React.FC = () => {
   const { technicians, addTechnician, updateTechnician, deleteTechnician } = useTicketContext();
@@ -208,8 +209,9 @@ export const AdminTechniciansView: React.FC = () => {
                 <input
                   type="text"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                  onChange={(e) => setPhone(maskPhone(e.target.value))}
+                  placeholder="(11) 99999-9999"
+                  className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono"
                 />
               </div>
 

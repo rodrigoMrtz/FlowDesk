@@ -136,4 +136,4 @@ export interface SLACheckResult {
   isBreached: boolean;
 }
 
-export type ViewMode = 'kanban' | 'list' | 'dashboard' | 'reports' | 'admin_users' | 'admin_orgs' | 'admin_technicians';
+export type ViewMode = 'kanban' | 'list' | 'dashboard' | 'reports' | 'admin_users' | 'admin_orgs' | 'admin_technicians' | 'profile';
